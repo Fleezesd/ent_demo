@@ -4,12 +4,12 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/car"
-	"entdemo/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/predicate"
 )
 
 // CarDelete is the builder for deleting a Car entity.

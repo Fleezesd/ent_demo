@@ -4,9 +4,6 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/car"
-	"entdemo/ent/group"
-	"entdemo/ent/user"
 	"errors"
 	"fmt"
 	"reflect"
@@ -15,6 +12,9 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // ent aliases to avoid import conflicts in user's code.

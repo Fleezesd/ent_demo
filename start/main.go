@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"entdemo/ent"
+	"github.com/fleezesd/entdemo/ent"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"

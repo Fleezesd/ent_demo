@@ -4,13 +4,13 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/group"
-	"entdemo/ent/user"
 	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // GroupCreate is the builder for creating a Group entity.

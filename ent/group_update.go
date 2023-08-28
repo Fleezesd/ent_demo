@@ -4,15 +4,15 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/group"
-	"entdemo/ent/predicate"
-	"entdemo/ent/user"
 	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/predicate"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // GroupUpdate is the builder for updating Group entities.

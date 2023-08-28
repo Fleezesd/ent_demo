@@ -3,14 +3,14 @@
 package ent
 
 import (
-	"entdemo/ent/car"
-	"entdemo/ent/user"
 	"fmt"
 	"strings"
 	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // Car is the model entity for the Car schema.

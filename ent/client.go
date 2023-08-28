@@ -8,16 +8,15 @@ import (
 	"fmt"
 	"log"
 
-	"entdemo/ent/migrate"
-
-	"entdemo/ent/car"
-	"entdemo/ent/group"
-	"entdemo/ent/user"
+	"github.com/fleezesd/entdemo/ent/migrate"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // Client is the client that holds all ent builders.

@@ -1,4 +1,4 @@
-module entdemo
+module github.com/fleezesd/entdemo
 
 go 1.20
 

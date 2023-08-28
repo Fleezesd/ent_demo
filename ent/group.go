@@ -3,12 +3,12 @@
 package ent
 
 import (
-	"entdemo/ent/group"
 	"fmt"
 	"strings"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/fleezesd/entdemo/ent/group"
 )
 
 // Group is the model entity for the Group schema.

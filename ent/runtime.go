@@ -3,9 +3,9 @@
 package ent
 
 import (
-	"entdemo/ent/group"
-	"entdemo/ent/schema"
-	"entdemo/ent/user"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/schema"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

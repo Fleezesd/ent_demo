@@ -4,9 +4,6 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/car"
-	"entdemo/ent/predicate"
-	"entdemo/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -14,6 +11,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/predicate"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // CarUpdate is the builder for updating Car entities.

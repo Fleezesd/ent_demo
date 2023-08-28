@@ -4,14 +4,14 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/car"
-	"entdemo/ent/user"
 	"errors"
 	"fmt"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // CarCreate is the builder for creating a Car entity.

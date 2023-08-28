@@ -4,16 +4,16 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/car"
-	"entdemo/ent/group"
-	"entdemo/ent/predicate"
-	"entdemo/ent/user"
 	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/predicate"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // UserUpdate is the builder for updating User entities.

@@ -5,15 +5,15 @@ package ent
 import (
 	"context"
 	"database/sql/driver"
-	"entdemo/ent/group"
-	"entdemo/ent/predicate"
-	"entdemo/ent/user"
 	"fmt"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/predicate"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // GroupQuery is the builder for querying Group entities.

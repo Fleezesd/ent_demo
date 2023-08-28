@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"entdemo/ent"
 	"fmt"
+	"github.com/fleezesd/entdemo/ent"
 	"log"
 	"time"
 )

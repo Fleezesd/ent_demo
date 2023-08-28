@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"entdemo/ent"
-	"entdemo/ent/car"
-	"entdemo/ent/user"
 	"fmt"
+	"github.com/fleezesd/entdemo/ent"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/user"
 	"log"
 )
 

@@ -4,8 +4,9 @@ package hook
 
 import (
 	"context"
-	"entdemo/ent"
 	"fmt"
+
+	"github.com/fleezesd/entdemo/ent"
 )
 
 // The CarFunc type is an adapter to allow the use of ordinary

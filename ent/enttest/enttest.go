@@ -4,13 +4,13 @@ package enttest
 
 import (
 	"context"
-	"entdemo/ent"
-	// required by schema hooks.
-	_ "entdemo/ent/runtime"
 
-	"entdemo/ent/migrate"
+	"github.com/fleezesd/entdemo/ent"
+	// required by schema hooks.
+	_ "github.com/fleezesd/entdemo/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
+	"github.com/fleezesd/entdemo/ent/migrate"
 )
 
 type (

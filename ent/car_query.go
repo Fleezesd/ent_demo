@@ -4,15 +4,15 @@ package ent
 
 import (
 	"context"
-	"entdemo/ent/car"
-	"entdemo/ent/predicate"
-	"entdemo/ent/user"
 	"fmt"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/predicate"
+	"github.com/fleezesd/entdemo/ent/user"
 )
 
 // CarQuery is the builder for querying Car entities.
