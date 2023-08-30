@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/fleezesd/entdemo/ent"
 	"log"
 	"time"
+
+	"github.com/fleezesd/entdemo/ent"
 )
 
 func CreateCars(ctx context.Context, client *ent.Client) (*ent.User, error) {

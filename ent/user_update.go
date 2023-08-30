@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -48,11 +49,49 @@ func (uu *UserUpdate) SetName(s string) *UserUpdate {
 	return uu
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetName(*s)
+// SetPassword sets the "password" field.
+func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
+	uu.mutation.SetPassword(s)
+	return uu
+}
+
+// SetSize sets the "size" field.
+func (uu *UserUpdate) SetSize(u user.Size) *UserUpdate {
+	uu.mutation.SetSize(u)
+	return uu
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (uu *UserUpdate) SetCreatedAt(t time.Time) *UserUpdate {
+	uu.mutation.SetCreatedAt(t)
+	return uu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCreatedAt(t *time.Time) *UserUpdate {
+	if t != nil {
+		uu.SetCreatedAt(*t)
 	}
+	return uu
+}
+
+// SetDefaultExprs sets the "default_exprs" field.
+func (uu *UserUpdate) SetDefaultExprs(s string) *UserUpdate {
+	uu.mutation.SetDefaultExprs(s)
+	return uu
+}
+
+// SetNillableDefaultExprs sets the "default_exprs" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDefaultExprs(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetDefaultExprs(*s)
+	}
+	return uu
+}
+
+// ClearDefaultExprs clears the value of the "default_exprs" field.
+func (uu *UserUpdate) ClearDefaultExprs() *UserUpdate {
+	uu.mutation.ClearDefaultExprs()
 	return uu
 }
 
@@ -167,6 +206,11 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "age", err: fmt.Errorf(`ent: validator failed for field "User.age": %w`, err)}
 		}
 	}
+	if v, ok := uu.mutation.Size(); ok {
+		if err := user.SizeValidator(v); err != nil {
+			return &ValidationError{Name: "size", err: fmt.Errorf(`ent: validator failed for field "User.size": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -190,6 +234,21 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.Password(); ok {
+		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.Size(); ok {
+		_spec.SetField(user.FieldSize, field.TypeEnum, value)
+	}
+	if value, ok := uu.mutation.CreatedAt(); ok {
+		_spec.SetField(user.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := uu.mutation.DefaultExprs(); ok {
+		_spec.SetField(user.FieldDefaultExprs, field.TypeString, value)
+	}
+	if uu.mutation.DefaultExprsCleared() {
+		_spec.ClearField(user.FieldDefaultExprs, field.TypeString)
 	}
 	if uu.mutation.CarsCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -320,11 +379,49 @@ func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
 	return uuo
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetName(*s)
+// SetPassword sets the "password" field.
+func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
+	uuo.mutation.SetPassword(s)
+	return uuo
+}
+
+// SetSize sets the "size" field.
+func (uuo *UserUpdateOne) SetSize(u user.Size) *UserUpdateOne {
+	uuo.mutation.SetSize(u)
+	return uuo
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (uuo *UserUpdateOne) SetCreatedAt(t time.Time) *UserUpdateOne {
+	uuo.mutation.SetCreatedAt(t)
+	return uuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCreatedAt(t *time.Time) *UserUpdateOne {
+	if t != nil {
+		uuo.SetCreatedAt(*t)
 	}
+	return uuo
+}
+
+// SetDefaultExprs sets the "default_exprs" field.
+func (uuo *UserUpdateOne) SetDefaultExprs(s string) *UserUpdateOne {
+	uuo.mutation.SetDefaultExprs(s)
+	return uuo
+}
+
+// SetNillableDefaultExprs sets the "default_exprs" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDefaultExprs(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetDefaultExprs(*s)
+	}
+	return uuo
+}
+
+// ClearDefaultExprs clears the value of the "default_exprs" field.
+func (uuo *UserUpdateOne) ClearDefaultExprs() *UserUpdateOne {
+	uuo.mutation.ClearDefaultExprs()
 	return uuo
 }
 
@@ -452,6 +549,11 @@ func (uuo *UserUpdateOne) check() error {
 			return &ValidationError{Name: "age", err: fmt.Errorf(`ent: validator failed for field "User.age": %w`, err)}
 		}
 	}
+	if v, ok := uuo.mutation.Size(); ok {
+		if err := user.SizeValidator(v); err != nil {
+			return &ValidationError{Name: "size", err: fmt.Errorf(`ent: validator failed for field "User.size": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -492,6 +594,21 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Password(); ok {
+		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Size(); ok {
+		_spec.SetField(user.FieldSize, field.TypeEnum, value)
+	}
+	if value, ok := uuo.mutation.CreatedAt(); ok {
+		_spec.SetField(user.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := uuo.mutation.DefaultExprs(); ok {
+		_spec.SetField(user.FieldDefaultExprs, field.TypeString, value)
+	}
+	if uuo.mutation.DefaultExprsCleared() {
+		_spec.ClearField(user.FieldDefaultExprs, field.TypeString)
 	}
 	if uuo.mutation.CarsCleared() {
 		edge := &sqlgraph.EdgeSpec{

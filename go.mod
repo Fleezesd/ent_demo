@@ -5,6 +5,7 @@ go 1.20
 require (
 	entgo.io/ent v0.12.3
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/shopspring/decimal v1.3.1
 )
 
 require (

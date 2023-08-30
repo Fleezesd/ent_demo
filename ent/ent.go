@@ -13,7 +13,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/card"
 	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/task"
 	"github.com/fleezesd/entdemo/ent/user"
 )
 
@@ -76,7 +78,9 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			car.Table:   car.ValidColumn,
+			card.Table:  card.ValidColumn,
 			group.Table: group.ValidColumn,
+			task.Table:  task.ValidColumn,
 			user.Table:  user.ValidColumn,
 		})
 	})

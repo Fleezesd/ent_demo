@@ -15,7 +15,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/fleezesd/entdemo/ent/car"
+	"github.com/fleezesd/entdemo/ent/card"
 	"github.com/fleezesd/entdemo/ent/group"
+	"github.com/fleezesd/entdemo/ent/task"
 	"github.com/fleezesd/entdemo/ent/user"
 )
 
@@ -26,8 +28,12 @@ type Client struct {
 	Schema *migrate.Schema
 	// Car is the client for interacting with the Car builders.
 	Car *CarClient
+	// Card is the client for interacting with the Card builders.
+	Card *CardClient
 	// Group is the client for interacting with the Group builders.
 	Group *GroupClient
+	// Task is the client for interacting with the Task builders.
+	Task *TaskClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -44,7 +50,9 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Car = NewCarClient(c.config)
+	c.Card = NewCardClient(c.config)
 	c.Group = NewGroupClient(c.config)
+	c.Task = NewTaskClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -129,7 +137,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:    ctx,
 		config: cfg,
 		Car:    NewCarClient(cfg),
+		Card:   NewCardClient(cfg),
 		Group:  NewGroupClient(cfg),
+		Task:   NewTaskClient(cfg),
 		User:   NewUserClient(cfg),
 	}, nil
 }
@@ -151,7 +161,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:    ctx,
 		config: cfg,
 		Car:    NewCarClient(cfg),
+		Card:   NewCardClient(cfg),
 		Group:  NewGroupClient(cfg),
+		Task:   NewTaskClient(cfg),
 		User:   NewUserClient(cfg),
 	}, nil
 }
@@ -182,7 +194,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Car.Use(hooks...)
+	c.Card.Use(hooks...)
 	c.Group.Use(hooks...)
+	c.Task.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
@@ -190,7 +204,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.Car.Intercept(interceptors...)
+	c.Card.Intercept(interceptors...)
 	c.Group.Intercept(interceptors...)
+	c.Task.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
 }
 
@@ -199,8 +215,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *CarMutation:
 		return c.Car.mutate(ctx, m)
+	case *CardMutation:
+		return c.Card.mutate(ctx, m)
 	case *GroupMutation:
 		return c.Group.mutate(ctx, m)
+	case *TaskMutation:
+		return c.Task.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -342,6 +362,124 @@ func (c *CarClient) mutate(ctx context.Context, m *CarMutation) (Value, error) {
 	}
 }
 
+// CardClient is a client for the Card schema.
+type CardClient struct {
+	config
+}
+
+// NewCardClient returns a client for the Card from the given config.
+func NewCardClient(c config) *CardClient {
+	return &CardClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `card.Hooks(f(g(h())))`.
+func (c *CardClient) Use(hooks ...Hook) {
+	c.hooks.Card = append(c.hooks.Card, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `card.Intercept(f(g(h())))`.
+func (c *CardClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Card = append(c.inters.Card, interceptors...)
+}
+
+// Create returns a builder for creating a Card entity.
+func (c *CardClient) Create() *CardCreate {
+	mutation := newCardMutation(c.config, OpCreate)
+	return &CardCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Card entities.
+func (c *CardClient) CreateBulk(builders ...*CardCreate) *CardCreateBulk {
+	return &CardCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Card.
+func (c *CardClient) Update() *CardUpdate {
+	mutation := newCardMutation(c.config, OpUpdate)
+	return &CardUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CardClient) UpdateOne(ca *Card) *CardUpdateOne {
+	mutation := newCardMutation(c.config, OpUpdateOne, withCard(ca))
+	return &CardUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CardClient) UpdateOneID(id int) *CardUpdateOne {
+	mutation := newCardMutation(c.config, OpUpdateOne, withCardID(id))
+	return &CardUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Card.
+func (c *CardClient) Delete() *CardDelete {
+	mutation := newCardMutation(c.config, OpDelete)
+	return &CardDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CardClient) DeleteOne(ca *Card) *CardDeleteOne {
+	return c.DeleteOneID(ca.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CardClient) DeleteOneID(id int) *CardDeleteOne {
+	builder := c.Delete().Where(card.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CardDeleteOne{builder}
+}
+
+// Query returns a query builder for Card.
+func (c *CardClient) Query() *CardQuery {
+	return &CardQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCard},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Card entity by its id.
+func (c *CardClient) Get(ctx context.Context, id int) (*Card, error) {
+	return c.Query().Where(card.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CardClient) GetX(ctx context.Context, id int) *Card {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *CardClient) Hooks() []Hook {
+	return c.hooks.Card
+}
+
+// Interceptors returns the client interceptors.
+func (c *CardClient) Interceptors() []Interceptor {
+	return c.inters.Card
+}
+
+func (c *CardClient) mutate(ctx context.Context, m *CardMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CardCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CardUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CardUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CardDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Card mutation op: %q", m.Op())
+	}
+}
+
 // GroupClient is a client for the Group schema.
 type GroupClient struct {
 	config
@@ -473,6 +611,124 @@ func (c *GroupClient) mutate(ctx context.Context, m *GroupMutation) (Value, erro
 		return (&GroupDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Group mutation op: %q", m.Op())
+	}
+}
+
+// TaskClient is a client for the Task schema.
+type TaskClient struct {
+	config
+}
+
+// NewTaskClient returns a client for the Task from the given config.
+func NewTaskClient(c config) *TaskClient {
+	return &TaskClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `task.Hooks(f(g(h())))`.
+func (c *TaskClient) Use(hooks ...Hook) {
+	c.hooks.Task = append(c.hooks.Task, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `task.Intercept(f(g(h())))`.
+func (c *TaskClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Task = append(c.inters.Task, interceptors...)
+}
+
+// Create returns a builder for creating a Task entity.
+func (c *TaskClient) Create() *TaskCreate {
+	mutation := newTaskMutation(c.config, OpCreate)
+	return &TaskCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Task entities.
+func (c *TaskClient) CreateBulk(builders ...*TaskCreate) *TaskCreateBulk {
+	return &TaskCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Task.
+func (c *TaskClient) Update() *TaskUpdate {
+	mutation := newTaskMutation(c.config, OpUpdate)
+	return &TaskUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TaskClient) UpdateOne(t *Task) *TaskUpdateOne {
+	mutation := newTaskMutation(c.config, OpUpdateOne, withTask(t))
+	return &TaskUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TaskClient) UpdateOneID(id int) *TaskUpdateOne {
+	mutation := newTaskMutation(c.config, OpUpdateOne, withTaskID(id))
+	return &TaskUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Task.
+func (c *TaskClient) Delete() *TaskDelete {
+	mutation := newTaskMutation(c.config, OpDelete)
+	return &TaskDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TaskClient) DeleteOne(t *Task) *TaskDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TaskClient) DeleteOneID(id int) *TaskDeleteOne {
+	builder := c.Delete().Where(task.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TaskDeleteOne{builder}
+}
+
+// Query returns a query builder for Task.
+func (c *TaskClient) Query() *TaskQuery {
+	return &TaskQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTask},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Task entity by its id.
+func (c *TaskClient) Get(ctx context.Context, id int) (*Task, error) {
+	return c.Query().Where(task.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TaskClient) GetX(ctx context.Context, id int) *Task {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *TaskClient) Hooks() []Hook {
+	return c.hooks.Task
+}
+
+// Interceptors returns the client interceptors.
+func (c *TaskClient) Interceptors() []Interceptor {
+	return c.inters.Task
+}
+
+func (c *TaskClient) mutate(ctx context.Context, m *TaskMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TaskCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TaskUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TaskUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TaskDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Task mutation op: %q", m.Op())
 	}
 }
 
@@ -629,9 +885,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Car, Group, User []ent.Hook
+		Car, Card, Group, Task, User []ent.Hook
 	}
 	inters struct {
-		Car, Group, User []ent.Interceptor
+		Car, Card, Group, Task, User []ent.Interceptor
 	}
 )

@@ -3,6 +3,9 @@
 package user
 
 import (
+	"fmt"
+	"time"
+
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 )
@@ -16,6 +19,16 @@ const (
 	FieldAge = "age"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldUsername holds the string denoting the username field in the database.
+	FieldUsername = "user-name"
+	// FieldPassword holds the string denoting the password field in the database.
+	FieldPassword = "password"
+	// FieldSize holds the string denoting the size field in the database.
+	FieldSize = "size"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldDefaultExprs holds the string denoting the default_exprs field in the database.
+	FieldDefaultExprs = "default_exprs"
 	// EdgeCars holds the string denoting the cars edge name in mutations.
 	EdgeCars = "cars"
 	// EdgeGroups holds the string denoting the groups edge name in mutations.
@@ -41,6 +54,11 @@ var Columns = []string{
 	FieldID,
 	FieldAge,
 	FieldName,
+	FieldUsername,
+	FieldPassword,
+	FieldSize,
+	FieldCreatedAt,
+	FieldDefaultExprs,
 }
 
 var (
@@ -62,9 +80,32 @@ func ValidColumn(column string) bool {
 var (
 	// AgeValidator is a validator for the "age" field. It is called by the builders before save.
 	AgeValidator func(int) error
-	// DefaultName holds the default value on creation for the "name" field.
-	DefaultName string
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
+	DefaultCreatedAt func() time.Time
 )
+
+// Size defines the type for the "size" enum field.
+type Size string
+
+// Size values.
+const (
+	SizeBig   Size = "big"
+	SizeSmall Size = "small"
+)
+
+func (s Size) String() string {
+	return string(s)
+}
+
+// SizeValidator is a validator for the "size" field enum values. It is called by the builders before save.
+func SizeValidator(s Size) error {
+	switch s {
+	case SizeBig, SizeSmall:
+		return nil
+	default:
+		return fmt.Errorf("user: invalid enum value for size field: %q", s)
+	}
+}
 
 // OrderOption defines the ordering options for the User queries.
 type OrderOption func(*sql.Selector)
@@ -82,6 +123,31 @@ func ByAge(opts ...sql.OrderTermOption) OrderOption {
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
+// ByUsername orders the results by the username field.
+func ByUsername(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUsername, opts...).ToFunc()
+}
+
+// ByPassword orders the results by the password field.
+func ByPassword(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPassword, opts...).ToFunc()
+}
+
+// BySize orders the results by the size field.
+func BySize(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSize, opts...).ToFunc()
+}
+
+// ByCreatedAt orders the results by the created_at field.
+func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
+}
+
+// ByDefaultExprs orders the results by the default_exprs field.
+func ByDefaultExprs(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDefaultExprs, opts...).ToFunc()
 }
 
 // ByCarsCount orders the results by cars count.
